@@ -187,14 +187,12 @@
     }
     
     [self setTransitioning:YES isShow:YES];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        //
-        [self.animatedTransition yb_showTransitioningWithContainer:self startView:startView startImage:startImage endFrame:endFrame orientation:self.rotationHandler.currentOrientation completion:^{
-            [self hideStatusBar];
-            [self build];
-            [self setTransitioning:NO isShow:YES];
-        }];
-    });
+    //
+    [self.animatedTransition yb_showTransitioningWithContainer:self startView:startView startImage:startImage endFrame:endFrame orientation:self.rotationHandler.currentOrientation completion:^{
+        [self hideStatusBar];
+        [self build];
+        [self setTransitioning:NO isShow:YES];
+    }];
 }
 
 - (void)hide {
@@ -214,11 +212,13 @@
     [self showStatusBar];
     
     [self setTransitioning:YES isShow:NO];
-    [self.animatedTransition yb_hideTransitioningWithContainer:self startView:startView endView:endView orientation:self.rotationHandler.currentOrientation completion:^{
-        [self rebuild];
-        [self removeFromSuperview];
-        [self setTransitioning:NO isShow:NO];
-    }];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.animatedTransition yb_hideTransitioningWithContainer:self startView:startView endView:endView orientation:self.rotationHandler.currentOrientation completion:^{
+            [self rebuild];
+            [self removeFromSuperview];
+            [self setTransitioning:NO isShow:NO];
+        }];
+    });
 }
 
 - (void)reloadData {
