@@ -187,11 +187,14 @@
     }
     
     [self setTransitioning:YES isShow:YES];
-    [self.animatedTransition yb_showTransitioningWithContainer:self startView:startView startImage:startImage endFrame:endFrame orientation:self.rotationHandler.currentOrientation completion:^{
-        [self hideStatusBar];
-        [self build];
-        [self setTransitioning:NO isShow:YES];
-    }];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        //
+        [self.animatedTransition yb_showTransitioningWithContainer:self startView:startView startImage:startImage endFrame:endFrame orientation:self.rotationHandler.currentOrientation completion:^{
+            [self hideStatusBar];
+            [self build];
+            [self setTransitioning:NO isShow:YES];
+        }];
+    });
 }
 
 - (void)hide {

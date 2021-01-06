@@ -29,14 +29,10 @@
     if (self) {
         [self initValue];
         [self.contentView addSubview:self.imageScrollView];
+        self.imageScrollView.frame = self.bounds;
         [self addGesture];
     }
     return self;
-}
-
-- (void)layoutSubviews {
-    [super layoutSubviews];
-    self.imageScrollView.frame = self.bounds;
 }
 
 - (void)initValue {
